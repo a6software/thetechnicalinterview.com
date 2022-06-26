@@ -1,7 +1,17 @@
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import type { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import yaml from "js-yaml";
+import { QuestionFile } from "../../types";
 
-export default function handler(req, res) {
+type Data = {
+  data: { correct: boolean };
+};
+
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
   // Get data submitted in request's body.
   const body = req.body;
 
@@ -9,14 +19,13 @@ export default function handler(req, res) {
   // in the command line where next.js app is running.
   console.log("body: ", body);
 
-  // try {
   const { correct_answers } = yaml.load(
     fs.readFileSync(
       // `${__dirname}/../../../../lib/questions/javascript/0000001-lost-in-parameters.yaml`,
       `${__dirname}/../../../../lib/questions/javascript/0000002-closures-raise-your-hand.yaml`,
       "utf8"
     )
-  );
+  ) as QuestionFile;
 
   console.log(`correct_answers`, correct_answers);
 

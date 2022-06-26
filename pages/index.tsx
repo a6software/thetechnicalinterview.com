@@ -1,17 +1,14 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import ReactMarkdown from "react-markdown";
-import { useEffect, useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { useState } from "react";
 import yaml from "js-yaml";
 import fs from "fs";
-import path from "path";
 import Markdown from "../lib/components/Markdown";
 import RadioButtons from "../lib/components/RadioButtons";
 import CheckBoxes from "../lib/components/CheckBoxes";
 import CorrectAnswer from "../lib/components/CorrectAnswer";
 import IncorrectAnswer from "../lib/components/IncorrectAnswer";
+import { QuestionFile } from "../types";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get document, or throw exception on error
@@ -30,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         `${__dirname}/../../../lib/questions/javascript/0000002-closures-raise-your-hand.yaml`,
         "utf8"
       )
-    );
+    ) as QuestionFile;
 
     return {
       props: {
@@ -53,7 +50,9 @@ type AnswerResponse = {
   data: { correct: boolean };
 };
 
-const Home: NextPage = ({
+type QuestionPageProps = QuestionFile;
+
+const QuestionPage: NextPage<QuestionPageProps> = ({
   question,
   hint,
   possible_answers,
@@ -62,27 +61,27 @@ const Home: NextPage = ({
   tags,
   credit,
 }) => {
-  console.log(`props`, {
-    question,
-    hint,
-    possible_answers,
-    correct_answers,
-    explanation,
-    tags,
-    credit,
-  });
-
-  const [result, setResult] = useState<AnswerResponse | undefined>(undefined);
+  const [result, setResult] = useState<AnswerResponse["data"] | undefined>(
+    undefined
+  );
 
   // Handles the submit event on form submit.
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: {
+    target: any;
+    preventDefault: () => void;
+    currentTarget: HTMLFormElement | undefined;
+  }) => {
     console.log(`event`, event.target);
     // Stop the form from submitting and refreshing the page.
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const payload = { answers: [] };
+    // TODO fix if keeping
+    // @ts-ignore
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
+      // TODO fix if keeping
+      // @ts-ignore
       payload.answers.push(value);
     }
 
@@ -156,7 +155,7 @@ const Home: NextPage = ({
                   <p>
                     <a
                       href={credit}
-                      target="_blank"
+                      rel="noopener"
                       title={`This question was originally found at: ${credit}`}
                     >
                       {credit}
@@ -179,4 +178,4 @@ const Home: NextPage = ({
   );
 };
 
-export default Home;
+export default QuestionPage;
