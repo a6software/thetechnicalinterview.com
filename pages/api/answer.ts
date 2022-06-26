@@ -22,11 +22,7 @@ export default function handler(
   console.log("body: ", body);
 
   const { correct_answers } = yaml.load(
-    fs.readFileSync(
-      // `${__dirname}/../../../../lib/questions/javascript/0000001-lost-in-parameters.yaml`,
-      `${basePath}/javascript/0000002-closures-raise-your-hand.yaml`,
-      "utf8"
-    )
+    fs.readFileSync(`${basePath}/${body.requestedQuestion}.yaml`, "utf8")
   ) as QuestionFile;
 
   console.log(`correct_answers`, correct_answers);

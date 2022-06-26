@@ -109,7 +109,7 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
     // Stop the form from submitting and refreshing the page.
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const payload = { answers: [] };
+    const payload = { requestedQuestion, answers: [] };
     // TODO fix if keeping
     // @ts-ignore
     for (let [key, value] of formData.entries()) {
@@ -147,7 +147,10 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
   };
 
   return (
-    <div className="primary-content bg-gray-50 h-screen" data-theme={"light"}>
+    <div
+      className="primary-content bg-gray-50 h-full min-h-screen"
+      data-theme={"light"}
+    >
       <Head>
         <title>TheTechnicalInterview.com</title>
         <meta name="description" content="The technical interview" />

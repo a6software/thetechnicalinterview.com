@@ -13,7 +13,12 @@ const RadioButtons = ({ possibleAnswers }: RadioButtonsProps) => {
         return (
           <div key={possibleAnswer} className="form-control">
             <label className="label cursor-pointer justify-start">
-              <input type="radio" name={key} className="radio radio-primary" />
+              <input
+                type="radio"
+                name={key}
+                className="radio radio-primary"
+                value={possibleAnswer}
+              />
               <span className="label-text my-3 ml-4">
                 <Markdown>{possibleAnswer}</Markdown>
               </span>

@@ -25,7 +25,10 @@ type IndexProps = {
 
 const Index: NextPage<IndexProps> = ({ availableQuestions }) => {
   return (
-    <div className="primary-content bg-gray-50 h-screen" data-theme={"light"}>
+    <div
+      className="primary-content bg-gray-50 h-full min-h-screen"
+      data-theme={"light"}
+    >
       <Head>
         <title>TheTechnicalInterview.com</title>
         <meta name="description" content="The technical interview" />
