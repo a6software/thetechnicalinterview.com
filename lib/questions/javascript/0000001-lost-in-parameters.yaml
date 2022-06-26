@@ -1,0 +1,43 @@
+---
+question: |
+  # Lost in parameters
+
+  What will log to console when running the following code snippet:
+  
+  ```js
+  (function immediateA(a) {
+    return (function immediateB(b) {
+      console.log(a); // What is logged?
+    })(1);
+  })(0);
+  ```
+
+hint: |
+  This is some hint text.
+  
+  It is multiline.
+
+possible_answers:
+  - "`1`"
+  - "`0`"
+  - "`undefined`"
+  - this code will not execute
+
+correct_answers:
+  - "`0`"
+
+explanation: |
+  `0` is logged to the console. Try the demo.
+
+  `immediateA` is called with the argument `0`, thus `a` parameter is `0`.
+
+  `immediateB` function, being nested into `immediateA` function, is a closure that captures `a` variable from the outer `immediateA` scope, where `a` is `0`. 
+  
+  Thus `console.log(a)` logs `0`.
+
+tags:
+  - iife
+  - scope
+
+credit:
+  - https://dmitripavlutin.com/javascript-closures-interview-questions/

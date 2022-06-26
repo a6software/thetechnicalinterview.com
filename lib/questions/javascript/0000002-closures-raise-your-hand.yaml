@@ -1,0 +1,53 @@
+---
+question: |
+  # Closures raise your hand
+
+  Consider the following functions `clickHandler`, `immediate`, and `delayedReload`:
+   
+  ```js  
+  let countClicks = 0;
+    button.addEventListener('click', function clickHandler() {
+    countClicks++;
+  });
+  ```
+  
+  ```js 
+  const result = (function immediate(number) {
+    const message = `number is: ${number}`;
+      return message;
+    })(100);
+  ```
+  
+  ```js 
+  setTimeout(function delayedReload() {
+    location.reload();
+  }, 1000);
+  ```
+  
+  Which of these 3 functions access outer scope variables?
+
+hint: |
+  This is some hint text.
+  
+  It is multiline.
+
+possible_answers:
+  - "`clickHandler`"
+  - "`immediate`"
+  - "`delayedReload`"
+
+correct_answers:
+  - "`clickHandler`"
+  - "`delayedReload`"
+
+explanation: |
+  * `clickHandler` accesses the variable `countClicks` from the outer scope.
+  * `immediate` doesn't access any variables from the outer scope.
+  * `delayedReload` accesses the global variable location from the global scope (aka the outermost scope).
+
+tags:
+  - closure
+  - scope
+
+credit:
+  - https://dmitripavlutin.com/javascript-closures-interview-questions/
