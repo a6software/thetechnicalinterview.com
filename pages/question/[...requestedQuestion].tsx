@@ -1,30 +1,48 @@
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import yaml from "js-yaml";
-import fs from "fs";
+import fs from "fs/promises";
 import Markdown from "../../lib/components/Markdown";
 import RadioButtons from "../../lib/components/RadioButtons";
 import CheckBoxes from "../../lib/components/CheckBoxes";
 import CorrectAnswer from "../../lib/components/CorrectAnswer";
 import IncorrectAnswer from "../../lib/components/IncorrectAnswer";
 import { QuestionFile } from "../../types";
+import listDirContents from "../../lib/utils/list-dir-contents";
+import path from "path";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+const basePath = `${__dirname}/../../../../lib/question`;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const availableQuestions = await listDirContents(basePath);
+  const paths = availableQuestions
+    .map((q) => q.replace(path.resolve(basePath), "").replace(".yaml", ""))
+    .map((q) => ({
+      params: {
+        requestedQuestion: [`/question${q}`],
+      },
+    }));
+
+  return {
+    paths,
+    fallback: true, // false or 'blocking'
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const requestedQuestion = params?.requestedQuestion || false;
 
-  if (!requestedQuestion) {
-    return {
-      notFound: true,
-    };
-  }
+  const requestedQuestionPath = (
+    Array.isArray(requestedQuestion) ? requestedQuestion : [requestedQuestion]
+  ).join("/");
 
-  const requestedQuestionPath = Array.isArray(requestedQuestion)
-    ? requestedQuestion
-    : [requestedQuestion];
+  const requestedQuestionFilePath = `${basePath}/${requestedQuestionPath}.yaml`;
 
   // Get document, or throw exception on error
   try {
+    const yamlFile = await fs.readFile(requestedQuestionFilePath, "utf-8");
+
     const {
       question,
       hint,
@@ -33,15 +51,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       explanation,
       tags,
       credit,
-    } = yaml.load(
-      fs.readFileSync(
-        // `${__dirname}/../../../../lib/questions/javascript/0000001-lost-in-parameters.yaml`,
-        `${__dirname}/../../../../lib/questions/${requestedQuestionPath.join(
-          "/"
-        )}.yaml`,
-        "utf8"
-      )
-    ) as QuestionFile;
+    } = yaml.load(yamlFile) as QuestionFile;
 
     return {
       props: {
@@ -80,6 +90,10 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
   const [result, setResult] = useState<AnswerResponse["data"] | undefined>(
     undefined
   );
+
+  if (!question) {
+    return null;
+  }
 
   // Handles the submit event on form submit.
   const handleSubmit = async (event: {

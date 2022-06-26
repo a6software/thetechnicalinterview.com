@@ -11,7 +11,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const questions = await listDirContents(
-    `${__dirname}/../../../../lib/questions`
+    `${__dirname}/../../../../lib/question`
   );
   console.log(`questions`, questions);
 

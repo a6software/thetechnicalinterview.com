@@ -1,11 +1,11 @@
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import listDirContents from "../lib/utils/list-dir-contents";
 import Link from "next/link";
 import path from "path";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const basePath = `${__dirname}/../../../lib/questions`;
+export const getStaticProps: GetStaticProps = async () => {
+  const basePath = `${__dirname}/../../../lib/question`;
 
   const availableQuestionsPaths = await listDirContents(basePath);
   const availableQuestions = availableQuestionsPaths.map((q) =>
@@ -24,7 +24,6 @@ type IndexProps = {
 };
 
 const Index: NextPage<IndexProps> = ({ availableQuestions }) => {
-  console.log(`availableQuestions`, availableQuestions);
   return (
     <div className="primary-content" data-theme={"light"}>
       <Head>
@@ -39,7 +38,7 @@ const Index: NextPage<IndexProps> = ({ availableQuestions }) => {
             {availableQuestions.map((question) => {
               return (
                 <li key={question} className="pb-2">
-                  <Link href={`/question/${question}`}>
+                  <Link href={`/question${question}`}>
                     <a className="link">{question}</a>
                   </Link>
                 </li>

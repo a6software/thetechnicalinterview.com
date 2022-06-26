@@ -11,7 +11,7 @@ const RadioButtons = ({ possibleAnswers }: RadioButtonsProps) => {
       {possibleAnswers.map((possibleAnswer) => {
         const key = `answer`;
         return (
-          <div key={key} className="form-control">
+          <div key={possibleAnswer} className="form-control">
             <label className="label cursor-pointer justify-start">
               <input type="radio" name={key} className="radio radio-primary" />
               <span className="label-text my-3 ml-4">
