@@ -8,6 +8,8 @@ type Data = {
   data: { correct: boolean };
 };
 
+const basePath = `${__dirname}/../../../../lib/question`;
+
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -22,7 +24,7 @@ export default function handler(
   const { correct_answers } = yaml.load(
     fs.readFileSync(
       // `${__dirname}/../../../../lib/questions/javascript/0000001-lost-in-parameters.yaml`,
-      `${__dirname}/../../../../lib/questions/javascript/0000002-closures-raise-your-hand.yaml`,
+      `${basePath}/javascript/0000002-closures-raise-your-hand.yaml`,
       "utf8"
     )
   ) as QuestionFile;
