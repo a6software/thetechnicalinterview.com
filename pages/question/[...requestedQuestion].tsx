@@ -143,14 +143,14 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
   };
 
   return (
-    <div className="primary-content" data-theme={"light"}>
+    <div className="primary-content bg-gray-50 " data-theme={"light"}>
       <Head>
         <title>TheTechnicalInterview.com</title>
         <meta name="description" content="The technical interview" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container mx-auto bg-gray-50 h-screen w-1/2">
+      <main className="container p-4 lg:mx-auto h-screen w-full lg:w-1/2">
         <div className="flex flex-col justify-center">
           <section>
             <Markdown className={"prose"}>{question}</Markdown>
