@@ -34,6 +34,10 @@ const Index: NextPage<IndexProps> = ({ availableQuestions }) => {
 
       <main className="container p-4 lg:mx-auto h-screen w-full lg:w-1/2">
         <div className="flex flex-col justify-center">
+          <p className="pb-8">
+            What do you mean this site looks terrible? How dare you. Back in the
+            olden days all sites looked like this.
+          </p>
           <ul>
             {availableQuestions.map((question) => {
               return (

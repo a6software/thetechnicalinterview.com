@@ -11,6 +11,7 @@ import IncorrectAnswer from "../../lib/components/IncorrectAnswer";
 import { QuestionFile } from "../../types";
 import listDirContents from "../../lib/utils/list-dir-contents";
 import path from "path";
+import Link from "next/link";
 
 const basePath = `${__dirname}/../../../../lib/question`;
 
@@ -55,6 +56,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     return {
       props: {
+        requestedQuestion: requestedQuestionPath,
         question,
         hint,
         possible_answers,
@@ -76,9 +78,10 @@ type AnswerResponse = {
   data: { correct: boolean };
 };
 
-type QuestionPageProps = QuestionFile;
+type QuestionPageProps = QuestionFile & { requestedQuestion: string };
 
 const QuestionPage: NextPage<QuestionPageProps> = ({
+  requestedQuestion,
   question,
   hint,
   possible_answers,
@@ -87,6 +90,7 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
   tags,
   credit,
 }) => {
+  console.log(`requestedQuestion`, requestedQuestion);
   const [result, setResult] = useState<AnswerResponse["data"] | undefined>(
     undefined
   );
@@ -150,8 +154,19 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container p-4 lg:mx-auto h-screen w-full lg:w-1/2">
+      <main className="container p-4 lg:mx-auto w-full lg:w-1/2">
         <div className="flex flex-col justify-center">
+          <div className="text-sm breadcrumbs mb-8">
+            <ul>
+              <li>
+                <Link href="/">
+                  <a>Home</a>
+                </Link>
+              </li>
+              <li>{requestedQuestion}</li>
+            </ul>
+          </div>
+
           <section>
             <Markdown className={"prose"}>{question}</Markdown>
 
