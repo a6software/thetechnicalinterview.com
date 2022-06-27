@@ -1,0 +1,50 @@
+---
+correct_answers:
+  - "`3`, `3`, `3`"
+credit:
+  - "https://dmitripavlutin.com/javascript-closures-interview-questions/"
+explanation: |
+  `3`, `3`, `3` is logged to console.
+  
+  The code snippet executes in 2 phases.
+  
+  ## Phase 1
+  
+  1. `for()` iterating 3 times. During each iteration a new function `log()` is created, which captures the variable `i`. `setTimout()` schedules `log()` for execution after 1000ms.
+  2. When `for()` cycle completes, `i` variable has value `3`.
+  
+  ## Phase 2
+  
+  The second phase happens after 1000ms:
+  
+  1. `setTimeout()` executes the scheduled `log()` functions. `log()` reads the current value of variable `i`, which is `3`, and logs to console `3`.
+  
+  That's why `3`, `3`, `3` is logged to the console.
+  
+  ### Side challenge 
+  
+  How would you fix this example to log `0`, `1`, `2` values after passing 1 second?
+hint: |
+  This is some hint text.
+  
+  It is multiline.
+possible_answers:
+  - "`0`, `0`, `0`"
+  - "`0`, `1`, `2`"
+  - "`1`, `2`, `3`"
+  - "`3`, `3`, `3`"
+question: |
+  # Tricky closure
+  
+  What will log to console the following code snippet:
+  
+  ```js
+  for (var i = 0; i < 3; i++) {
+    setTimeout(function log() {
+      console.log(i); // What is logged?
+    }, 1000);
+  }
+  ```
+tags:
+  - closure
+  - scope
