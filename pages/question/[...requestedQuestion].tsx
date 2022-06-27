@@ -1,6 +1,6 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import yaml from "js-yaml";
 import fs from "fs/promises";
 import Markdown from "../../lib/components/Markdown";
@@ -12,6 +12,7 @@ import { QuestionFile } from "../../types";
 import listDirContents from "../../lib/utils/list-dir-contents";
 import path from "path";
 import Link from "next/link";
+import classNames from "classnames";
 
 const basePath = `${__dirname}/../../../../lib/question`;
 
@@ -80,6 +81,14 @@ type AnswerResponse = {
 
 type QuestionPageProps = QuestionFile & { requestedQuestion: string };
 
+const executeScroll = (ref: MutableRefObject<any>) => {
+  console.log(`scroll into view`, ref);
+  ref.current.scrollIntoView({
+    behavior: "smooth",
+    block: "end",
+  });
+};
+
 const QuestionPage: NextPage<QuestionPageProps> = ({
   requestedQuestion,
   question,
@@ -90,10 +99,17 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
   tags,
   credit,
 }) => {
-  console.log(`requestedQuestion`, requestedQuestion);
   const [result, setResult] = useState<AnswerResponse["data"] | undefined>(
     undefined
   );
+
+  const answerRef = useRef(null);
+
+  useEffect(() => {
+    if (result) {
+      executeScroll(answerRef);
+    }
+  }, [result]);
 
   if (!question) {
     return null;
@@ -105,7 +121,6 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
     preventDefault: () => void;
     currentTarget: HTMLFormElement | undefined;
   }) => {
-    console.log(`event`, event.target);
     // Stop the form from submitting and refreshing the page.
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -113,7 +128,6 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
     // TODO fix if keeping
     // @ts-ignore
     for (let [key, value] of formData.entries()) {
-      console.log(key, value);
       // TODO fix if keeping
       // @ts-ignore
       payload.answers.push(value);
@@ -142,9 +156,12 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
     // Get the response data from server as JSON.
     // If server returns the name submitted, that means the form works.
     const result = await response.json();
-    console.log(`result`, result);
     setResult(result.data);
   };
+
+  const answerBlockClasses = classNames({
+    hidden: !result,
+  });
 
   return (
     <div
@@ -188,38 +205,34 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
             </form>
           </section>
 
-          <div className="">
-            {result && (
-              <>
-                <section>
-                  {result.correct && <CorrectAnswer />}
-                  {!result.correct && <IncorrectAnswer />}
+          <div className={answerBlockClasses} ref={answerRef}>
+            <section>
+              {result?.correct && <CorrectAnswer />}
+              {!result?.correct && <IncorrectAnswer />}
 
-                  <Markdown className="prose mt-8">{explanation}</Markdown>
-                </section>
+              <Markdown className="prose mt-8">{explanation}</Markdown>
+            </section>
 
-                <section className="prose mt-8">
-                  <h3>Credit</h3>
-                  <p>
-                    <a
-                      href={credit}
-                      target="_blank"
-                      rel="noreferrer"
-                      title={`This question was originally found at: ${credit}`}
-                    >
-                      {credit}
-                    </a>{" "}
-                  </p>
+            <section className="prose mt-8">
+              <h3>Credit</h3>
+              <p>
+                <a
+                  href={credit}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={`This question was originally found at: ${credit}`}
+                >
+                  {credit}
+                </a>{" "}
+              </p>
 
-                  <h3>Tags</h3>
-                  <ul>
-                    {tags.map((tag) => {
-                      return <li key={tag}>{tag}</li>;
-                    })}
-                  </ul>
-                </section>
-              </>
-            )}
+              <h3>Tags</h3>
+              <ul>
+                {tags.map((tag) => {
+                  return <li key={tag}>{tag}</li>;
+                })}
+              </ul>
+            </section>
           </div>
         </div>
       </main>
