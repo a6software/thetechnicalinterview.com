@@ -19,13 +19,11 @@ export default function handler(
 
   // Optional logging to see the responses
   // in the command line where next.js app is running.
-  console.log("body: ", body);
+  // console.log("body: ", body);
 
   const { correct_answers } = yaml.load(
     fs.readFileSync(`${basePath}/${body.requestedQuestion}.yaml`, "utf8")
   ) as QuestionFile;
-
-  console.log(`correct_answers`, correct_answers);
 
   const correct =
     body.answers.length > 0 &&

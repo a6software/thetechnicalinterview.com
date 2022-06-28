@@ -269,14 +269,24 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
               <div className="w-1/2 flex justify-start">
                 {previous && (
                   <Link href={previous}>
-                    <a className="btn btn-secondary">Previous</a>
+                    <a
+                      className="btn btn-secondary"
+                      onClick={() => setResult(undefined)}
+                    >
+                      Previous
+                    </a>
                   </Link>
                 )}
               </div>
               <div className="w-1/2 flex justify-end">
                 {next && (
                   <Link href={next}>
-                    <a className="btn btn-secondary">Next</a>
+                    <a
+                      className="btn btn-secondary"
+                      onClick={() => setResult(undefined)}
+                    >
+                      Next
+                    </a>
                   </Link>
                 )}
               </div>
