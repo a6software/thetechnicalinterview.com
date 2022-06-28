@@ -1,6 +1,6 @@
 export type PossibleAnswer = string;
 
-export type QuestionFile = {
+export interface QuestionFile {
   question: string;
   hint: string;
   possible_answers: string[];
@@ -8,4 +8,11 @@ export type QuestionFile = {
   explanation: string;
   tags: string[];
   credit: string;
-};
+}
+
+export interface GetPreviousAndNextQuestionResponse {
+  previous: Path | null;
+  next: Path | null;
+}
+
+export type Path = string;

@@ -8,23 +8,35 @@ import RadioButtons from "../../lib/components/RadioButtons";
 import CheckBoxes from "../../lib/components/CheckBoxes";
 import CorrectAnswer from "../../lib/components/CorrectAnswer";
 import IncorrectAnswer from "../../lib/components/IncorrectAnswer";
-import { QuestionFile } from "../../types";
+import {
+  GetPreviousAndNextQuestionResponse,
+  Path,
+  QuestionFile,
+} from "../../types";
 import listDirContents from "../../lib/utils/list-dir-contents";
 import path from "path";
 import Link from "next/link";
 import classNames from "classnames";
+import getPreviousAndNextQuestion from "../../lib/utils/get-prev-and-next-question";
 
 const basePath = `${__dirname}/../../../../lib/question`;
 
-export const getStaticPaths: GetStaticPaths = async () => {
+const getAvailableQuestionPaths = async (): Promise<Path[]> => {
   const availableQuestions = await listDirContents(basePath);
-  const paths = availableQuestions
-    .map((q) => q.replace(path.resolve(basePath), "").replace(".yaml", ""))
-    .map((q) => ({
-      params: {
-        requestedQuestion: [`/question${q}`],
-      },
-    }));
+  return availableQuestions.map((q) =>
+    q.replace(path.resolve(basePath), "").replace(".yaml", "")
+  );
+};
+
+const addQuestionPathPrefix = (path: Path) => `/question${path}`;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const availableQuestionPaths = await getAvailableQuestionPaths();
+  const paths = availableQuestionPaths.map((q) => ({
+    params: {
+      requestedQuestion: [addQuestionPathPrefix(q)],
+    },
+  }));
 
   return {
     paths,
@@ -35,11 +47,26 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const requestedQuestion = params?.requestedQuestion || false;
 
-  const requestedQuestionPath = (
-    Array.isArray(requestedQuestion) ? requestedQuestion : [requestedQuestion]
-  ).join("/");
+  if (!requestedQuestion) {
+    return {
+      notFound: true,
+    };
+  }
 
-  const requestedQuestionFilePath = `${basePath}/${requestedQuestionPath}.yaml`;
+  // I hate it.
+  const requestedQuestionPath =
+    "/" +
+    (Array.isArray(requestedQuestion)
+      ? requestedQuestion
+      : [requestedQuestion]
+    ).join("/");
+
+  const requestedQuestionFilePath = `${basePath}${requestedQuestionPath}.yaml`;
+
+  const { next, previous } = getPreviousAndNextQuestion(
+    await getAvailableQuestionPaths(),
+    requestedQuestionPath
+  );
 
   // Get document, or throw exception on error
   try {
@@ -65,6 +92,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         explanation,
         tags,
         credit,
+        next: next && addQuestionPathPrefix(next),
+        previous: previous && addQuestionPathPrefix(previous),
       },
     };
   } catch (e) {
@@ -79,10 +108,10 @@ type AnswerResponse = {
   data: { correct: boolean };
 };
 
-type QuestionPageProps = QuestionFile & { requestedQuestion: string };
+type QuestionPageProps = QuestionFile &
+  GetPreviousAndNextQuestionResponse & { requestedQuestion: string };
 
 const executeScroll = (ref: MutableRefObject<any>) => {
-  console.log(`scroll into view`, ref);
   ref.current.scrollIntoView({
     behavior: "smooth",
     block: "end",
@@ -98,6 +127,8 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
   explanation,
   tags,
   credit,
+  next,
+  previous,
 }) => {
   const [result, setResult] = useState<AnswerResponse["data"] | undefined>(
     undefined
@@ -233,6 +264,23 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
                 })}
               </ul>
             </section>
+
+            <div className="flex mt-16 w-full">
+              <div className="w-1/2 flex justify-start">
+                {previous && (
+                  <Link href={previous}>
+                    <a className="btn btn-secondary">Previous</a>
+                  </Link>
+                )}
+              </div>
+              <div className="w-1/2 flex justify-end">
+                {next && (
+                  <Link href={next}>
+                    <a className="btn btn-secondary">Next</a>
+                  </Link>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </main>
