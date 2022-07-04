@@ -1,0 +1,58 @@
+---
+question: |
+  # Right or wrong message
+
+  What will log to console the following code snippet:
+  
+  ```js
+  function createIncrement() {
+    let count = 0;
+    function increment() {
+      count++;
+    }
+  
+    let message = `Count is ${count}`;
+    function log() {
+      console.log(message);
+    }
+    
+    return [increment, log];
+  }
+  const [increment, log] = createIncrement();
+  increment();
+  increment();
+  increment();
+  log(); // What is logged?
+  ```
+
+hint: |
+  This is some hint text.
+  
+  It is multiline.
+
+possible_answers:
+  - `Count is undefined`
+  - `Count is 3`
+  - `Count is 0`
+  - `Count is NaN`
+
+correct_answers:
+  - `Count is 0`
+
+explanation: |
+  `Count is 0` is logged to console.
+  
+  `increment()` function has been called 3 times, effectively incrementing `count` to value `3`.
+  
+  `message` variable exists within the scope of `createIncrement()` function. Its initial value is `Count is 0`. However, even if `count` variable has been incremented a few times, `message` variable always holds `Count is 0`.
+  
+  `log()` function is a closure that captures `message` variable from the `createIncrement()` scope. `console.log(message)` logs `Count is 0` to console.
+
+  Side challenge: how would you fix `log()` function to return the message having the actual count value? 
+
+tags:
+  - closure
+  - scope
+
+credit:
+  - https://dmitripavlutin.com/javascript-closures-interview-questions/

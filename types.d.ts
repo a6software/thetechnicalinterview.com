@@ -3,7 +3,7 @@ export type PossibleAnswer = string;
 export interface QuestionFile {
   question: string;
   hint: string;
-  possible_answers: string[];
+  possible_answers: PossibleAnswer[];
   correct_answers: string[];
   explanation: string;
   tags: string[];
