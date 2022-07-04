@@ -31,13 +31,13 @@ hint: |
   It is multiline.
 
 possible_answers:
-  - `Count is undefined`
-  - `Count is 3`
-  - `Count is 0`
-  - `Count is NaN`
+  - "`Count is undefined`"
+  - "`Count is 3`"
+  - "`Count is 0`"
+  - "`Count is NaN`"
 
 correct_answers:
-  - `Count is 0`
+  - "`Count is 0`"
 
 explanation: |
   `Count is 0` is logged to console.
