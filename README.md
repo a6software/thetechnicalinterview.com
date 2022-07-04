@@ -10,6 +10,8 @@ Questions are created from [YAML files](https://github.com/a6software/thetechnic
 
 To add a new question, the simplest way is to copy an existing question, delete all the existing stuff and then add in your own question / answer info instead.
 
+Be sure to [lint the contents of your YAML file](http://www.yamllint.com/).
+
 Then put in a PR. The rest happens by magic / the work experience kid at Vercel.
 
 ## Local dev
