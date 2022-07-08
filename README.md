@@ -36,9 +36,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] 'next' when last question in a section should not take you to the next section (e.g. AWS > JS)
 - [ ] add 'edit this question' github link from Q page
 - [ ] add 'discuss this question' - link to github Q&A (not sure how that works yet)
-- [ ] add some form of analytics, ideally not GA
 - [ ] add icon links in footer
 
 ## Done
 
 - [x] add github link from main page
+- [x] add some form of analytics, ideally not GA - well, it's GA for now. Open to alternatives.
+  
