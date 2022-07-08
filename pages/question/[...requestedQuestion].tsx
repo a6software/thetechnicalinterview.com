@@ -254,7 +254,7 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
                   title={`This question was originally found at: ${credit}`}
                 >
                   {credit}
-                </a>{" "}
+                </a>
               </p>
 
               <h3>Tags</h3>
