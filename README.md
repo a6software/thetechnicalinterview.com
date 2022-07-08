@@ -26,3 +26,11 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+
+
+# ToDo
+
+- [ ] separate AWS / JS questions dynamically
+- [ ] fix up the overly long breadcrumbs for aws Q's
+- [ ] stretch 'submit' button on mobile view
+- [ ] 'next' when last question in a section should not take you to the next section (e.g. AWS > JS)
