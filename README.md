@@ -30,16 +30,19 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 # ToDo
 
-- [ ] separate AWS / JS questions dynamically
 - [ ] fix up the overly long breadcrumbs for aws Q's
 - [ ] stretch 'submit' button on mobile view
 - [ ] 'next' when last question in a section should not take you to the next section (e.g. AWS > JS)
 - [ ] add 'edit this question' github link from Q page
-- [ ] add 'discuss this question' - link to github Q&A (not sure how that works yet)
+- [ ] add 'discuss this question' - link to GitHub Q&A (not sure how that works yet)
 - [ ] add icon links in footer
+- [ ] extract base layout
+  - [ ] extract Head
+  - [ ] move footer into appropriate place
 
 ## Done
 
+- [x] separate AWS / JS questions dynamically
 - [x] add github link from main page
 - [x] add some form of analytics, ideally not GA - well, it's GA for now. Open to alternatives.
-  
+- [x] extract footer
