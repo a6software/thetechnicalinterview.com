@@ -13,7 +13,6 @@ export default async function handler(
   const questions = await listDirContents(
     `${__dirname}/../../../../lib/question`
   );
-  console.log(`questions`, questions);
 
   res.status(200).json({ name: "John Doe" });
 }

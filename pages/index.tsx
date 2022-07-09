@@ -1,29 +1,48 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import listDirContents from "../lib/utils/list-dir-contents";
 import Link from "next/link";
-import path from "path";
+import getTopics from "../lib/utils/get-topics";
+import fs from "fs/promises";
+import yaml from "js-yaml";
+import { TopicMeta, TopicPathing } from "../types";
+import Footer from "../lib/components/Footer";
+
+const basePath = `${__dirname}/../../../lib/question`;
+
+type TopicListing = {
+  dir: TopicPathing["dir"];
+  title: TopicMeta["title"];
+};
 
 export const getStaticProps: GetStaticProps = async () => {
-  const basePath = `${__dirname}/../../../lib/question`;
+  const availableTopics = await getTopics(basePath);
 
-  const availableQuestionsPaths = await listDirContents(basePath);
-  const availableQuestions = availableQuestionsPaths.map((q) =>
-    q.replace(path.resolve(basePath), "").replace(".yaml", "")
+  // TODO extract
+  const topics: TopicListing[] = await Promise.all(
+    availableTopics.map(async (topic) => {
+      const yamlFile = await fs.readFile(topic.topicFilePath, "utf-8");
+
+      const { title } = yaml.load(yamlFile) as TopicMeta;
+
+      return { dir: topic.dir, title };
+    })
   );
+
+  console.log(`topics`, topics);
 
   return {
     props: {
-      availableQuestions,
+      topics,
     },
   };
 };
 
 type IndexProps = {
+  topics: TopicListing[];
   availableQuestions: string[];
 };
 
-const Index: NextPage<IndexProps> = ({ availableQuestions }) => {
+const Index: NextPage<IndexProps> = ({ topics }) => {
   return (
     <div
       className="primary-content bg-gray-50 h-full min-h-screen"
@@ -42,11 +61,11 @@ const Index: NextPage<IndexProps> = ({ availableQuestions }) => {
             olden days all sites looked like this.
           </p>
           <ul>
-            {availableQuestions.map((question) => {
+            {topics.map((topic) => {
               return (
-                <li key={question} className="pb-2">
-                  <Link href={`/question${question}`}>
-                    <a className="link">{question}</a>
+                <li key={topic.dir} className="pb-2">
+                  <Link href={`/topic/${topic.dir}`}>
+                    <a className="link">{topic.title}</a>
                   </Link>
                 </li>
               );
@@ -54,21 +73,7 @@ const Index: NextPage<IndexProps> = ({ availableQuestions }) => {
           </ul>
         </div>
 
-        <div className="mt-8">
-          <ul>
-            <li>
-              <a
-                href="https://github.com/a6software/thetechnicalinterview.com"
-                target="_blank"
-                rel="noreferrer"
-                title={"GitHub"}
-                className="link"
-              >
-                GitHub repo
-              </a>
-            </li>
-          </ul>
-        </div>
+        <Footer />
       </main>
     </div>
   );

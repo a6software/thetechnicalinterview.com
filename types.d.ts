@@ -1,4 +1,9 @@
+export type Path = string;
 export type PossibleAnswer = string;
+
+export interface TopicMeta {
+  title: string;
+}
 
 export interface QuestionFile {
   question: string;
@@ -15,4 +20,8 @@ export interface GetPreviousAndNextQuestionResponse {
   next: Path | null;
 }
 
-export type Path = string;
+export interface TopicPathing {
+  path: Path;
+  dir: string;
+  topicFilePath: Path;
+}
