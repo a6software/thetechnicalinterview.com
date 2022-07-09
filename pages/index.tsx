@@ -20,7 +20,6 @@ export const getStaticProps: GetStaticProps = async () => {
   // TODO extract
   const topics: TopicListing[] = await Promise.all(
     availableTopics.map(async (topic) => {
-      console.log(`topic.topicFilePath`, topic.topicFilePath);
       const yamlFile = await fs.readFile(topic.topicFilePath, "utf-8");
 
       const { title } = yaml.load(yamlFile) as TopicMeta;
