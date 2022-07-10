@@ -93,6 +93,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     return {
       props: {
+        topic,
         requestedQuestion: requestedQuestionPath,
         question,
         hint,
@@ -118,7 +119,10 @@ type AnswerResponse = {
 };
 
 type QuestionPageProps = QuestionFile &
-  GetPreviousAndNextQuestionResponse & { requestedQuestion: string };
+  GetPreviousAndNextQuestionResponse & {
+    requestedQuestion: string;
+    topic: string;
+  };
 
 const executeScroll = (ref: MutableRefObject<any>) => {
   ref.current.scrollIntoView({
@@ -128,6 +132,7 @@ const executeScroll = (ref: MutableRefObject<any>) => {
 };
 
 const QuestionPage: NextPage<QuestionPageProps> = ({
+  topic,
   requestedQuestion,
   question,
   hint,
@@ -164,7 +169,7 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
     // Stop the form from submitting and refreshing the page.
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const payload = { requestedQuestion, answers: [] };
+    const payload = { topic, requestedQuestion, answers: [] };
     // TODO fix if keeping
     // @ts-ignore
     for (let [key, value] of formData.entries()) {

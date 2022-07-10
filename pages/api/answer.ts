@@ -3,12 +3,13 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import yaml from "js-yaml";
 import { QuestionFile } from "../../types";
+import path from "path";
 
 type Data = {
   data: { correct: boolean };
 };
 
-const basePath = `${__dirname}/../../../../lib/question`;
+const basePath = `${process.cwd()}/lib/question`;
 
 export default function handler(
   req: NextApiRequest,
@@ -22,7 +23,10 @@ export default function handler(
   // console.log("body: ", body);
 
   const { correct_answers } = yaml.load(
-    fs.readFileSync(`${basePath}/${body.requestedQuestion}.yaml`, "utf8")
+    fs.readFileSync(
+      path.join(basePath, body.topic, `${body.requestedQuestion}.yaml`),
+      "utf8"
+    )
   ) as QuestionFile;
 
   const correct =
