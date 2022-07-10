@@ -30,20 +30,24 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 # ToDo
 
-- [ ] pretty sure `question/[...requestedQuestion]` should not be spread
-- [ ] initial render of Q pages is slow as heck, investigate
+- [ ] need test for Q submission
+- [ ] breadcrumbs are funked on Q pages
+- [ ] breadcrumbs needed on topic pages
 - [ ] fix up the overly long breadcrumbs for aws Q's
 - [ ] stretch 'submit' button on mobile view
 - [ ] 'next' when last question in a section should not take you to the next section (e.g. AWS > JS)
 - [ ] add 'edit this question' github link from Q page
 - [ ] add 'discuss this question' - link to GitHub Q&A (not sure how that works yet)
 - [ ] add icon links in footer
+- [ ] extract 'next' and 'previous' buttons
 - [ ] extract base layout
   - [ ] extract Head
   - [ ] move footer into appropriate place
 
 ## Done
 
+- [x] pretty sure `question/[...requestedQuestion]` should not be spread
+- [x] initial render of Q pages is slow as heck, investigate
 - [x] separate AWS / JS questions dynamically
 - [x] add github link from main page
 - [x] add some form of analytics, ideally not GA - well, it's GA for now. Open to alternatives.
