@@ -3,23 +3,24 @@ import Head from "next/head";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import yaml from "js-yaml";
 import fs from "fs/promises";
-import Markdown from "../../lib/components/Markdown";
-import RadioButtons from "../../lib/components/RadioButtons";
-import CheckBoxes from "../../lib/components/CheckBoxes";
-import CorrectAnswer from "../../lib/components/CorrectAnswer";
-import IncorrectAnswer from "../../lib/components/IncorrectAnswer";
+import Markdown from "../../../lib/components/Markdown";
+import RadioButtons from "../../../lib/components/RadioButtons";
+import CheckBoxes from "../../../lib/components/CheckBoxes";
+import CorrectAnswer from "../../../lib/components/CorrectAnswer";
+import IncorrectAnswer from "../../../lib/components/IncorrectAnswer";
 import {
   GetPreviousAndNextQuestionResponse,
   Path,
   QuestionFile,
-} from "../../types";
-import listDirContents from "../../lib/utils/list-dir-contents";
+} from "../../../types";
+import listDirContents from "../../../lib/utils/list-dir-contents";
 import path from "path";
 import Link from "next/link";
 import classNames from "classnames";
-import getPreviousAndNextQuestion from "../../lib/utils/get-prev-and-next-question";
+import getPreviousAndNextQuestion from "../../../lib/utils/get-prev-and-next-question";
+import topic from "../../../lib/utils/topic";
 
-const basePath = `${__dirname}/../../../../lib/question`;
+const basePath = `${process.cwd()}/lib/question`;
 
 const getAvailableQuestionPaths = async (): Promise<Path[]> => {
   const availableQuestions = await listDirContents(basePath);
@@ -31,23 +32,27 @@ const getAvailableQuestionPaths = async (): Promise<Path[]> => {
 const addQuestionPathPrefix = (path: Path) => `/question${path}`;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const availableQuestionPaths = await getAvailableQuestionPaths();
-  const paths = availableQuestionPaths.map((q) => ({
-    params: {
-      requestedQuestion: [addQuestionPathPrefix(q)],
-    },
-  }));
+  const questionTopics = await topic(basePath);
+  const paths = questionTopics.flatMap((questionTopic) =>
+    questionTopic.questions.map((q) => ({
+      params: {
+        topic: questionTopic.directory,
+        requestedQuestion: q.replace(".yaml", ""),
+      },
+    }))
+  );
 
   return {
     paths,
-    fallback: true, // false or 'blocking'
+    fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const topic = params?.topic || false;
   const requestedQuestion = params?.requestedQuestion || false;
 
-  if (!requestedQuestion) {
+  if (!topic || !requestedQuestion) {
     return {
       notFound: true,
     };
@@ -61,7 +66,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       : [requestedQuestion]
     ).join("/");
 
-  const requestedQuestionFilePath = `${basePath}${requestedQuestionPath}.yaml`;
+  const requestedQuestionFilePath = path.join(
+    basePath,
+    topic as string,
+    `${requestedQuestionPath}.yaml`
+  );
 
   const { next, previous } = getPreviousAndNextQuestion(
     await getAvailableQuestionPaths(),
