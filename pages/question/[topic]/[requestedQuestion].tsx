@@ -18,12 +18,12 @@ import path from "path";
 import Link from "next/link";
 import classNames from "classnames";
 import getPreviousAndNextQuestion from "../../../lib/utils/get-prev-and-next-question";
+import topic from "../../../lib/utils/topic";
 
 const basePath = `${process.cwd()}/lib/question`;
 
 const getAvailableQuestionPaths = async (): Promise<Path[]> => {
   const availableQuestions = await listDirContents(basePath);
-  console.log(`availableQuestions`, availableQuestions);
   return availableQuestions.map((q) =>
     q.replace(path.resolve(basePath), "").replace(".yaml", "")
   );
@@ -32,26 +32,18 @@ const getAvailableQuestionPaths = async (): Promise<Path[]> => {
 const addQuestionPathPrefix = (path: Path) => `/question${path}`;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const availableQuestionPaths = await getAvailableQuestionPaths();
-  console.log(`availableQuestionPaths`, availableQuestionPaths);
-  const paths = availableQuestionPaths
-    .filter((aq) => !aq.endsWith("topic"))
-    .map((q) => ({
+  const questionTopics = await topic(basePath);
+  const paths = questionTopics.flatMap((questionTopic) =>
+    questionTopic.questions.map((q) => ({
       params: {
-        requestedQuestion: [addQuestionPathPrefix(q)],
+        topic: questionTopic.directory,
+        requestedQuestion: q.replace(".yaml", ""),
       },
-    }));
-  // console.log(`paths`, JSON.stringify(paths, null, 2));
+    }))
+  );
 
   return {
-    paths: [
-      {
-        params: {
-          topic: "javascript",
-          requestedQuestion: "0000001-lost-in-parameters",
-        },
-      },
-    ],
+    paths,
     fallback: false,
   };
 };
@@ -59,7 +51,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const topic = params?.topic || false;
   const requestedQuestion = params?.requestedQuestion || false;
-  console.log(`getStaticProps`, { topic, requestedQuestion });
 
   if (!topic || !requestedQuestion) {
     return {
@@ -80,7 +71,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     topic as string,
     `${requestedQuestionPath}.yaml`
   );
-  console.log(`requestedQuestionFilePath`, requestedQuestionFilePath);
 
   const { next, previous } = getPreviousAndNextQuestion(
     await getAvailableQuestionPaths(),
