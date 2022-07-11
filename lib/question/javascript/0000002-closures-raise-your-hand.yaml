@@ -1,7 +1,6 @@
 ---
+title: Closures raise your hand
 question: |
-  # Closures raise your hand
-
   Consider the following functions `clickHandler`, `immediate`, and `delayedReload`:
    
   ```js  

@@ -33,9 +33,8 @@ possible_answers:
   - "`0`, `1`, `2`"
   - "`1`, `2`, `3`"
   - "`3`, `3`, `3`"
+title: Tricky closure
 question: |
-  # Tricky closure
-  
   What will log to console the following code snippet:
   
   ```js
