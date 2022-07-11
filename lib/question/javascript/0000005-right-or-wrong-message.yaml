@@ -1,7 +1,6 @@
 ---
+title: Right or wrong message
 question: |
-  # Right or wrong message
-
   What will log to console the following code snippet:
   
   ```js

@@ -6,6 +6,7 @@ export interface TopicMeta {
 }
 
 export interface QuestionFile {
+  title: string;
   question: string;
   hint: string;
   possible_answers: PossibleAnswer[];

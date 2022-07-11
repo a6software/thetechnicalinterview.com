@@ -12,6 +12,7 @@ import {
   GetPreviousAndNextQuestionResponse,
   Path,
   QuestionFile,
+  TopicMeta,
 } from "../../../types";
 import listDirContents from "../../../lib/utils/list-dir-contents";
 import path from "path";
@@ -19,8 +20,16 @@ import Link from "next/link";
 import classNames from "classnames";
 import getPreviousAndNextQuestion from "../../../lib/utils/get-prev-and-next-question";
 import topic from "../../../lib/utils/topic";
+import { ParsedUrlQuery } from "querystring";
 
 const basePath = `${process.cwd()}/lib/question`;
+
+interface Params extends ParsedUrlQuery {
+  topic: string;
+  requestedQuestion: string;
+}
+
+interface RequestedQuestionProps {}
 
 const getAvailableQuestionPaths = async (): Promise<Path[]> => {
   const availableQuestions = await listDirContents(basePath);
@@ -31,7 +40,7 @@ const getAvailableQuestionPaths = async (): Promise<Path[]> => {
 
 const addQuestionPathPrefix = (path: Path) => `/question${path}`;
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const questionTopics = await topic(basePath);
   const paths = questionTopics.flatMap((questionTopic) =>
     questionTopic.questions.map((q) => ({
@@ -48,7 +57,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps<
+  RequestedQuestionProps,
+  Params
+> = async ({ params }) => {
   const topic = params?.topic || false;
   const requestedQuestion = params?.requestedQuestion || false;
 
@@ -58,18 +70,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
 
-  // I hate it.
-  const requestedQuestionPath =
-    "/" +
-    (Array.isArray(requestedQuestion)
-      ? requestedQuestion
-      : [requestedQuestion]
-    ).join("/");
+  const requestedQuestionPath = `/${requestedQuestion}`;
+
+  const requestedTopicPath = path.join(basePath, topic as string);
+
+  const requestedTopicFilePath = path.join(requestedTopicPath, `topic.yaml`);
 
   const requestedQuestionFilePath = path.join(
-    basePath,
-    topic as string,
-    `${requestedQuestionPath}.yaml`
+    requestedTopicPath,
+    `${requestedQuestion}.yaml`
   );
 
   const { next, previous } = getPreviousAndNextQuestion(
@@ -79,9 +88,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   // Get document, or throw exception on error
   try {
-    const yamlFile = await fs.readFile(requestedQuestionFilePath, "utf-8");
+    const topicYamlFile = await fs.readFile(requestedTopicFilePath, "utf-8");
+
+    const { title: topicTitle } = yaml.load(topicYamlFile) as TopicMeta;
+
+    const questionYamlFile = await fs.readFile(
+      requestedQuestionFilePath,
+      "utf-8"
+    );
 
     const {
+      title,
       question,
       hint,
       possible_answers,
@@ -89,10 +106,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       explanation,
       tags,
       credit,
-    } = yaml.load(yamlFile) as QuestionFile;
+    } = yaml.load(questionYamlFile) as QuestionFile;
 
     return {
       props: {
+        topicTitle,
+        title,
         topic,
         requestedQuestion: requestedQuestionPath,
         question,
@@ -122,6 +141,7 @@ type QuestionPageProps = QuestionFile &
   GetPreviousAndNextQuestionResponse & {
     requestedQuestion: string;
     topic: string;
+    topicTitle: string;
   };
 
 const executeScroll = (ref: MutableRefObject<any>) => {
@@ -132,6 +152,8 @@ const executeScroll = (ref: MutableRefObject<any>) => {
 };
 
 const QuestionPage: NextPage<QuestionPageProps> = ({
+  topicTitle,
+  title,
   topic,
   requestedQuestion,
   question,
@@ -228,11 +250,19 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
                   <a>Home</a>
                 </Link>
               </li>
-              <li>{requestedQuestion}</li>
+              <li>
+                <Link href={`/topic/${topic}`}>
+                  <a>{topicTitle}</a>
+                </Link>
+              </li>
+              <li>{title}</li>
             </ul>
           </div>
 
           <section>
+            <div className="prose mb-6">
+              <h1 className="">{title}</h1>
+            </div>
             <Markdown className={"prose"}>{question}</Markdown>
 
             <form onSubmit={handleSubmit}>

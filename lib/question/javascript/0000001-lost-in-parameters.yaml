@@ -1,7 +1,6 @@
 ---
+title: Lost in parameters
 question: |
-  # Lost in parameters
-
   What will log to console when running the following code snippet:
   
   ```js
