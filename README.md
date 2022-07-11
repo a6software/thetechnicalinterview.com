@@ -30,6 +30,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 # ToDo
 
+- [ ] why the heck is `capitalize` not working on Q list? 
 - [ ] need test for Q submission
 - [ ] extract breadcrumbs
 - [ ] breadcrumbs should be responsive

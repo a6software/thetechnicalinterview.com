@@ -260,7 +260,9 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
           </div>
 
           <section>
-            <h1 className="prose">{title}</h1>
+            <div className="prose mb-6">
+              <h1 className="">{title}</h1>
+            </div>
             <Markdown className={"prose"}>{question}</Markdown>
 
             <form onSubmit={handleSubmit}>
