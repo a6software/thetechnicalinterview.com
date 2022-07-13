@@ -1,0 +1,39 @@
+---
+title: Sign in and analytics
+question: |
+  A developer is adding sign-up and sign-in functionality to an application. The application is required to
+  make an API call to a custom analytics solution to log user sign-in events.
+  
+  Which combination of actions should the developer take to satisfy these requirements? 
+  
+  **Select TWO**
+
+hint:
+
+
+possible_answers:
+  - Use Amazon Cognito to provide the sign-up and sign-in functionality.
+  - Use AWS IAM to provide the sign-up and sign-in functionality.
+  - Configure an AWS Config rule to make the API call triggered by the post-authentication event.
+  - Invoke an Amazon API Gateway method to make the API call triggered by the post-authentication event.
+  - Execute an AWS Lambda function to make the API call triggered by the post-authentication event
+
+correct_answers:
+  - Use Amazon Cognito to provide the sign-up and sign-in functionality.
+  - Execute an AWS Lambda function to make the API call triggered by the post-authentication event
+
+explanation: |
+  Amazon Cognito adds user sign-up, sign-in, and access control to web and mobile applications quickly
+  and easily. 
+  
+  Users can also create an AWS Lambda function to make an API call to a custom analytics solution
+  and then trigger that function with an Amazon Cognito post authentication trigger.
+
+tags:
+  - aws
+  - cognito
+  - lambda
+
+credit:
+  - https://d1.awsstatic.com/training-and-certification/docs-dev-associate/AWS-Certified-Developer-Associate_Sample-Questions.pdf
+

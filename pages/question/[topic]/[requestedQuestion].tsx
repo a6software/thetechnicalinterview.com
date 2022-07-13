@@ -267,9 +267,17 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
 
             <form onSubmit={handleSubmit}>
               {correct_answers.length === 1 ? (
-                <RadioButtons possibleAnswers={possible_answers} />
+                <RadioButtons
+                  possibleAnswers={possible_answers}
+                  correctAnswers={correct_answers}
+                  highlightCorrectAnswers={typeof result !== "undefined"}
+                />
               ) : (
-                <CheckBoxes possibleAnswers={possible_answers} />
+                <CheckBoxes
+                  possibleAnswers={possible_answers}
+                  correctAnswers={correct_answers}
+                  highlightCorrectAnswers={typeof result !== "undefined"}
+                />
               )}
 
               <div className="mt-4 mb-8">

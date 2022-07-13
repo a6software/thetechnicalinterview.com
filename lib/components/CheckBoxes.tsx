@@ -1,17 +1,29 @@
 import Markdown from "./Markdown";
 import { PossibleAnswer } from "../../types";
+import classnames from "classnames";
 
 type CheckBoxesProps = {
   possibleAnswers: PossibleAnswer[];
+  correctAnswers: PossibleAnswer[];
+  highlightCorrectAnswers: boolean;
 };
 
-const CheckBoxes = ({ possibleAnswers }: CheckBoxesProps) => {
+const CheckBoxes = ({
+  possibleAnswers,
+  correctAnswers,
+  highlightCorrectAnswers,
+}: CheckBoxesProps) => {
   return (
     <>
       {possibleAnswers.map((possibleAnswer) => {
+        const classes = classnames("form-control", {
+          "bg-success":
+            highlightCorrectAnswers && correctAnswers.includes(possibleAnswer),
+        });
+
         const key = `answer-${possibleAnswer}`;
         return (
-          <div key={key} className="form-control">
+          <div key={key} className={classes}>
             <label
               className="label cursor-pointer justify-start"
               data-testid="checkbox-label"

@@ -30,23 +30,26 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 # ToDo
 
+- [ ] BUG - fix up next & previous, broken
+ - [ ] need test for Q submission
+ - [ ] 'next' when last question in a section should not take you to the next section (e.g. AWS > JS)
+ - [ ] extract 'next' and 'previous' buttons
 - [ ] why the heck is `capitalize` not working on Q list? 
-- [ ] need test for Q submission
-- [ ] extract breadcrumbs
+- [ ] DRY up radio & checkbox
+- - [ ] extract breadcrumbs
 - [ ] breadcrumbs should be responsive
   - [ ] fix up the overly long breadcrumbs for aws Q's
 - [ ] stretch 'submit' button on mobile view
-- [ ] 'next' when last question in a section should not take you to the next section (e.g. AWS > JS)
 - [ ] add 'edit this question' github link from Q page
 - [ ] add 'discuss this question' - link to GitHub Q&A (not sure how that works yet)
 - [ ] add icon links in footer
-- [ ] extract 'next' and 'previous' buttons
 - [ ] extract base layout
   - [ ] extract Head
   - [ ] move footer into appropriate place
 
 ## Done
 
+- [x] colourise correct answers after submit 
 - [x] breadcrumbs are funked on Q pages
 - [x] breadcrumbs needed on topic pages
 - [x] pretty sure `question/[...requestedQuestion]` should not be spread

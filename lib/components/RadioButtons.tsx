@@ -1,17 +1,29 @@
+import classnames from "classnames";
 import Markdown from "./Markdown";
 import { PossibleAnswer } from "../../types";
 
 type RadioButtonsProps = {
   possibleAnswers: PossibleAnswer[];
+  correctAnswers: PossibleAnswer[];
+  highlightCorrectAnswers: boolean;
 };
 
-const RadioButtons = ({ possibleAnswers }: RadioButtonsProps) => {
+const RadioButtons = ({
+  possibleAnswers,
+  correctAnswers,
+  highlightCorrectAnswers,
+}: RadioButtonsProps) => {
   return (
     <>
       {possibleAnswers.map((possibleAnswer) => {
+        const classes = classnames("form-control", {
+          "bg-success":
+            highlightCorrectAnswers && correctAnswers.includes(possibleAnswer),
+        });
+
         const key = `answer`;
         return (
-          <div key={possibleAnswer} className="form-control">
+          <div key={possibleAnswer} className={classes}>
             <label className="label cursor-pointer justify-start">
               <input
                 type="radio"
