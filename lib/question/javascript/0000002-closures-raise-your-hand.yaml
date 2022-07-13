@@ -5,7 +5,7 @@ question: |
    
   ```js  
   let countClicks = 0;
-    button.addEventListener('click', function clickHandler() {
+  button.addEventListener('click', function clickHandler() {
     countClicks++;
   });
   ```

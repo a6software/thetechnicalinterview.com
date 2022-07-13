@@ -1,0 +1,50 @@
+---
+title: Designing a web application for real time feedback
+question: |
+  A developer is designing a web application that allows the users to post comments and receive near real-time feedback.
+  
+  Which architectures meet these requirements? 
+  
+  **Select TWO**
+
+hint:
+
+
+possible_answers:
+  - Create an AWS AppSync schema and corresponding APIs. Use an Amazon DynamoDB table as the data store.
+  - Create a WebSocket API in Amazon API Gateway. Use an AWS Lambda function as the backend and an Amazon DynamoDB table as the data store.
+  - Create an AWS Elastic Beanstalk application backed by an Amazon RDS database. Configure the application to allow long-lived TCP/IP sockets.
+  - Create a GraphQL endpoint in Amazon API Gateway. Use an Amazon DynamoDB table as the data store.
+  - Enable WebSocket on Amazon CloudFront. Use an AWS Lambda function as the origin and an Amazon Aurora DB cluster as the data store
+
+correct_answers:
+  - Create an AWS AppSync schema and corresponding APIs. Use an Amazon DynamoDB table as the data store.
+  - Create a WebSocket API in Amazon API Gateway. Use an AWS Lambda function as the backend and an Amazon DynamoDB table as the data store.
+
+explanation: |
+  AWS AppSync simplifies application development by letting users create a flexible API to securely
+  access, manipulate, and combine data from one or more data sources. 
+  
+  AWS AppSync is a managed service that
+  uses GraphQL to make it easy for applications to get the exact data they need. AWS AppSync allows users to
+  build scalable applications, including those requiring real-time updates, on a range of data sources, including
+  Amazon DynamoDB. 
+  
+  In Amazon API Gateway, users can create a WebSocket API as a stateful frontend for an AWS service (such as AWS Lambda or DynamoDB) or for an HTTP endpoint. 
+  
+  The WebSocket API invokes the backend based on the content of the messages it receives from client applications. 
+  
+  Unlike a REST API, which receives and responds to requests, a WebSocket API supports two-way communication between client
+  applications and the backend.
+
+tags:
+  - aws
+  - AppSync
+  - api gateway
+  - lambda
+  - dynamo db
+  - websocket
+
+credit:
+  - https://d1.awsstatic.com/training-and-certification/docs-dev-associate/AWS-Certified-Developer-Associate_Sample-Questions.pdf
+
