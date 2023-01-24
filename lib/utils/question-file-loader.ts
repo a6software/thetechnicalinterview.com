@@ -6,11 +6,15 @@ import getPreviousAndNextQuestion from "./get-prev-and-next-question";
 import listDirContents from "./list-dir-contents";
 import config from "../config";
 
-const getAvailableQuestionPaths = async (): Promise<Path[]> => {
-  const availableQuestions = await listDirContents(config.basePath);
-  return availableQuestions.map((q) =>
-    q.replace(path.resolve(config.basePath), "").replace(".yaml", "")
-  );
+const getAvailableQuestionPaths = async (
+  startingDir = config.basePath,
+  topicPathPrefix = ""
+): Promise<Path[]> => {
+  const availableQuestions = await listDirContents(startingDir);
+  return availableQuestions
+    .map((q) => q.replace(path.resolve(startingDir), "").replace(".yaml", ""))
+    .filter((q) => q !== "/topic")
+    .map((q) => `${topicPathPrefix !== "" && `/${topicPathPrefix}`}${q}`);
 };
 
 const addQuestionPathPrefix = (path: Path) => `/question${path}`;
@@ -27,12 +31,16 @@ const questionFileLoader = async (topic: string, requestedQuestion: string) => {
     `${requestedQuestion}.yaml`
   );
 
+  const availableQuestionPaths = await getAvailableQuestionPaths(
+    requestedTopicPath,
+    topic
+  );
+
   const { next, previous } = getPreviousAndNextQuestion(
-    await getAvailableQuestionPaths(),
+    availableQuestionPaths,
     requestedQuestionPath
   );
 
-  // Get document, or throw exception on error
   try {
     const topicYamlFile = await fs.readFile(requestedTopicFilePath, "utf-8");
 

@@ -4,7 +4,7 @@ const getPreviousAndNextQuestion = (
   paths: Path[],
   currentPath: Path
 ): GetPreviousAndNextQuestionResponse => {
-  const index = paths.findIndex((p) => p === currentPath);
+  const index = paths.findIndex((p) => p.endsWith(currentPath));
 
   return {
     previous: paths[index - 1] ?? null,
