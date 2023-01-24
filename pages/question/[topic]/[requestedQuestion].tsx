@@ -8,6 +8,7 @@ import RadioButtons from "../../../lib/components/RadioButtons";
 import CheckBoxes from "../../../lib/components/CheckBoxes";
 import CorrectAnswer from "../../../lib/components/CorrectAnswer";
 import IncorrectAnswer from "../../../lib/components/IncorrectAnswer";
+import Credit from "../../../lib/components/Credit";
 import {
   GetPreviousAndNextQuestionResponse,
   Path,
@@ -246,14 +247,10 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
           <div className="text-sm breadcrumbs mb-8">
             <ul>
               <li>
-                <Link href="/">
-                  Home
-                </Link>
+                <Link href="/">Home</Link>
               </li>
               <li>
-                <Link href={`/topic/${topic}`}>
-                  {topicTitle}
-                </Link>
+                <Link href={`/topic/${topic}`}>{topicTitle}</Link>
               </li>
               <li>{title}</li>
             </ul>
@@ -297,17 +294,20 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
             </section>
 
             <section className="prose mt-8">
-              <h3>Credit</h3>
-              <p>
-                <a
-                  href={credit}
-                  target="_blank"
-                  rel="noreferrer"
-                  title={`This question was originally found at: ${credit}`}
-                >
-                  {credit}
-                </a>
-              </p>
+              {credit.length > 0 && (
+                <>
+                  <h3>Credit</h3>
+                  <ul>
+                    {credit.map((c) => {
+                      return (
+                        <li key={c}>
+                          <Credit credit={c} />
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              )}
 
               <h3>Tags</h3>
               <ul>
@@ -323,10 +323,9 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
                   <Link
                     href={previous}
                     className="btn btn-secondary"
-                    onClick={() => setResult(undefined)}>
-                    
-                      Previous
-                    
+                    onClick={() => setResult(undefined)}
+                  >
+                    Previous
                   </Link>
                 )}
               </div>
@@ -335,10 +334,9 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
                   <Link
                     href={next}
                     className="btn btn-secondary"
-                    onClick={() => setResult(undefined)}>
-                    
-                      Next
-                    
+                    onClick={() => setResult(undefined)}
+                  >
+                    Next
                   </Link>
                 )}
               </div>
