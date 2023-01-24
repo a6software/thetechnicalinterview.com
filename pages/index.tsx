@@ -7,7 +7,7 @@ import yaml from "js-yaml";
 import { TopicMeta, TopicPathing } from "../types";
 import Footer from "../lib/components/Footer";
 
-const basePath = `${__dirname}/../../../lib/question`;
+const basePath = `${__dirname}/../../../questions`;
 
 type TopicListing = {
   dir: TopicPathing["dir"];

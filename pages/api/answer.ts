@@ -9,7 +9,7 @@ type Data = {
   data: { correct: boolean };
 };
 
-const basePath = `${process.cwd()}/lib/question`;
+const basePath = `${process.cwd()}/questions`;
 
 export default function handler(
   req: NextApiRequest,

@@ -10,9 +10,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const questions = await listDirContents(
-    `${__dirname}/../../../../lib/question`
-  );
+  const questions = await listDirContents(`${__dirname}/../../../../questions`);
 
   res.status(200).json({ name: "John Doe" });
 }

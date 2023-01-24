@@ -26,3 +26,9 @@ export interface TopicPathing {
   dir: string;
   topicFilePath: Path;
 }
+
+export interface AvailableQuestion {
+  path: string;
+  number: string; // gotta love those leading zeros
+  title: string;
+}
