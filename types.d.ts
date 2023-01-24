@@ -13,7 +13,7 @@ export interface QuestionFile {
   correct_answers: string[];
   explanation: string;
   tags: string[];
-  credit: string;
+  credit: string[];
 }
 
 export interface GetPreviousAndNextQuestionResponse {
