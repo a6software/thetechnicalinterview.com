@@ -32,3 +32,8 @@ export interface AvailableQuestion {
   number: string; // gotta love those leading zeros
   title: string;
 }
+
+export interface TopicListing {
+  dir: TopicPathing["dir"];
+  title: TopicMeta["title"];
+}

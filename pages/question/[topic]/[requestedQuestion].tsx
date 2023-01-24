@@ -1,8 +1,6 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
-import yaml from "js-yaml";
-import fs from "fs/promises";
 import Markdown from "../../../lib/components/Markdown";
 import RadioButtons from "../../../lib/components/RadioButtons";
 import CheckBoxes from "../../../lib/components/CheckBoxes";
@@ -11,17 +9,13 @@ import IncorrectAnswer from "../../../lib/components/IncorrectAnswer";
 import Credit from "../../../lib/components/Credit";
 import {
   GetPreviousAndNextQuestionResponse,
-  Path,
   QuestionFile,
-  TopicMeta,
 } from "../../../types";
-import listDirContents from "../../../lib/utils/list-dir-contents";
-import path from "path";
 import Link from "next/link";
 import classNames from "classnames";
-import getPreviousAndNextQuestion from "../../../lib/utils/get-prev-and-next-question";
 import topic from "../../../lib/utils/topic";
 import { ParsedUrlQuery } from "querystring";
+import questionFileLoader from "../../../lib/utils/question-file-loader";
 
 const basePath = `${process.cwd()}/questions`;
 
@@ -31,15 +25,6 @@ interface Params extends ParsedUrlQuery {
 }
 
 interface RequestedQuestionProps {}
-
-const getAvailableQuestionPaths = async (): Promise<Path[]> => {
-  const availableQuestions = await listDirContents(basePath);
-  return availableQuestions.map((q) =>
-    q.replace(path.resolve(basePath), "").replace(".yaml", "")
-  );
-};
-
-const addQuestionPathPrefix = (path: Path) => `/question${path}`;
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const questionTopics = await topic(basePath);
@@ -71,67 +56,22 @@ export const getStaticProps: GetStaticProps<
     };
   }
 
-  const requestedQuestionPath = `/${requestedQuestion}`;
-
-  const requestedTopicPath = path.join(basePath, topic as string);
-
-  const requestedTopicFilePath = path.join(requestedTopicPath, `topic.yaml`);
-
-  const requestedQuestionFilePath = path.join(
-    requestedTopicPath,
-    `${requestedQuestion}.yaml`
+  const questionFileContents = await questionFileLoader(
+    topic,
+    requestedQuestion
   );
 
-  const { next, previous } = getPreviousAndNextQuestion(
-    await getAvailableQuestionPaths(),
-    requestedQuestionPath
-  );
-
-  // Get document, or throw exception on error
-  try {
-    const topicYamlFile = await fs.readFile(requestedTopicFilePath, "utf-8");
-
-    const { title: topicTitle } = yaml.load(topicYamlFile) as TopicMeta;
-
-    const questionYamlFile = await fs.readFile(
-      requestedQuestionFilePath,
-      "utf-8"
-    );
-
-    const {
-      title,
-      question,
-      hint,
-      possible_answers,
-      correct_answers,
-      explanation,
-      tags,
-      credit,
-    } = yaml.load(questionYamlFile) as QuestionFile;
-
-    return {
-      props: {
-        topicTitle,
-        title,
-        topic,
-        requestedQuestion: requestedQuestionPath,
-        question,
-        hint,
-        possible_answers,
-        correct_answers,
-        explanation,
-        tags,
-        credit,
-        next: next && addQuestionPathPrefix(next),
-        previous: previous && addQuestionPathPrefix(previous),
-      },
-    };
-  } catch (e) {
-    console.log(e);
+  if (!questionFileContents) {
     return {
       notFound: true,
     };
   }
+
+  return {
+    props: {
+      ...questionFileContents,
+    },
+  };
 };
 
 type AnswerResponse = {

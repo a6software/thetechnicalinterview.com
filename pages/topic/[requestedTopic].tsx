@@ -1,17 +1,13 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import path from "path";
-import fs from "fs/promises";
-import yaml from "js-yaml";
 import { ParsedUrlQuery } from "querystring";
-import listDirContents from "../../lib/utils/list-dir-contents";
 import Footer from "../../lib/components/Footer";
 import getTopics from "../../lib/utils/get-topics";
 import { AvailableQuestion, TopicMeta } from "../../types";
 import QuestionLink from "../../lib/components/QuestionLink";
-
-const basePath = `${process.cwd()}/questions`;
+import config from "../../lib/config";
+import topicFileLoader from "../../lib/utils/topic-file-loader";
 
 interface Params extends ParsedUrlQuery {
   requestedTopic: string;
@@ -23,7 +19,7 @@ interface RequestedTopicProps {
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const availableTopics = await getTopics(basePath);
+  const availableTopics = await getTopics(config.basePath);
 
   const topicPaths = availableTopics.map((availableTopic) => ({
     params: {
@@ -37,25 +33,6 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   };
 };
 
-/**
- * GET RID.
- *
- * @param availableQuestions
- */
-const horribleHack = (availableQuestions: string[]) =>
-  availableQuestions.map((availableQuestion) => {
-    const [number, ...title] = availableQuestion
-      .split("/")
-      .filter((x) => x)[1]
-      .split("-");
-
-    return {
-      path: availableQuestion,
-      number,
-      title: title.join(" "),
-    };
-  });
-
 export const getStaticProps: GetStaticProps<
   RequestedTopicProps,
   Params
@@ -68,38 +45,29 @@ export const getStaticProps: GetStaticProps<
     };
   }
 
-  const topicPath = path.join(basePath, requestedTopic);
-  const availableQuestionsPaths = await listDirContents(topicPath);
-  const availableQuestions = availableQuestionsPaths
-    .map((q) => q.replace(path.resolve(basePath), "").replace(".yaml", ""))
-    .filter((aq) => !aq.endsWith("topic"));
+  const topicFileContents = await topicFileLoader(requestedTopic);
 
-  try {
-    const requestedTopicFilePath = path.join(topicPath, `topic.yaml`);
-    const topicYamlFile = await fs.readFile(requestedTopicFilePath, "utf-8");
-    const { title: topicTitle } = yaml.load(topicYamlFile) as TopicMeta;
-
-    console.log(`availableQuestionsPaths`, availableQuestionsPaths);
-
-    return {
-      props: {
-        topicTitle,
-        availableQuestions: horribleHack(availableQuestions),
-      },
-    };
-  } catch (e) {
-    console.log(e);
+  if (!topicFileContents) {
     return {
       notFound: true,
     };
   }
+
+  const { topicTitle, availableQuestions } = topicFileContents;
+
+  return {
+    props: {
+      topicTitle,
+      availableQuestions,
+    },
+  };
 };
 
 const RequestedTopic: NextPage<RequestedTopicProps> = ({
   topicTitle,
   availableQuestions,
 }) => {
-  console.log(`availableQuestions`, availableQuestions);
+  // console.log(`availableQuestions`, availableQuestions);
 
   return (
     <div

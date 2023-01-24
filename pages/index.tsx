@@ -2,33 +2,16 @@ import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import getTopics from "../lib/utils/get-topics";
-import fs from "fs/promises";
-import yaml from "js-yaml";
-import { TopicMeta, TopicPathing } from "../types";
 import Footer from "../lib/components/Footer";
+import getAvailableTopics from "../lib/utils/get-available-topics";
+import { TopicListing } from "../types";
 
 const basePath = `${__dirname}/../../../questions`;
-
-type TopicListing = {
-  dir: TopicPathing["dir"];
-  title: TopicMeta["title"];
-};
 
 export const getStaticProps: GetStaticProps = async () => {
   const availableTopics = await getTopics(basePath);
 
-  // TODO extract
-  const topics: TopicListing[] = await Promise.all(
-    availableTopics.map(async (topic) => {
-      const yamlFile = await fs.readFile(topic.topicFilePath, "utf-8");
-
-      const { title } = yaml.load(yamlFile) as TopicMeta;
-
-      return { dir: topic.dir, title };
-    })
-  );
-
-  console.log(`topics`, topics);
+  const topics = await getAvailableTopics(availableTopics);
 
   return {
     props: {
