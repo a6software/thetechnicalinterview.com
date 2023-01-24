@@ -23,7 +23,7 @@ import getPreviousAndNextQuestion from "../../../lib/utils/get-prev-and-next-que
 import topic from "../../../lib/utils/topic";
 import { ParsedUrlQuery } from "querystring";
 
-const basePath = `${process.cwd()}/lib/question`;
+const basePath = `${process.cwd()}/questions`;
 
 interface Params extends ParsedUrlQuery {
   topic: string;

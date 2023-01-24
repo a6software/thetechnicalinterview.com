@@ -1,26 +1,20 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import path from "path";
-import listDirContents from "../../lib/utils/list-dir-contents";
-import { GetStaticPaths } from "next";
-import Footer from "../../lib/components/Footer";
-import getTopics from "../../lib/utils/get-topics";
-import { ParsedUrlQuery } from "querystring";
 import Link from "next/link";
+import path from "path";
 import fs from "fs/promises";
 import yaml from "js-yaml";
-import { TopicMeta } from "../../types";
+import { ParsedUrlQuery } from "querystring";
+import listDirContents from "../../lib/utils/list-dir-contents";
+import Footer from "../../lib/components/Footer";
+import getTopics from "../../lib/utils/get-topics";
+import { AvailableQuestion, TopicMeta } from "../../types";
+import QuestionLink from "../../lib/components/QuestionLink";
 
-const basePath = `${process.cwd()}/lib/question`;
+const basePath = `${process.cwd()}/questions`;
 
 interface Params extends ParsedUrlQuery {
   requestedTopic: string;
-}
-
-interface AvailableQuestion {
-  path: string;
-  number: string; // gotta love those leading zeros
-  title: string;
 }
 
 interface RequestedTopicProps {
@@ -31,14 +25,14 @@ interface RequestedTopicProps {
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const availableTopics = await getTopics(basePath);
 
-  const paths = availableTopics.map((availableTopic) => ({
+  const topicPaths = availableTopics.map((availableTopic) => ({
     params: {
       requestedTopic: availableTopic.dir,
     },
   }));
 
   return {
-    paths,
+    paths: topicPaths,
     fallback: true, // false or 'blocking'
   };
 };
@@ -85,6 +79,8 @@ export const getStaticProps: GetStaticProps<
     const topicYamlFile = await fs.readFile(requestedTopicFilePath, "utf-8");
     const { title: topicTitle } = yaml.load(topicYamlFile) as TopicMeta;
 
+    console.log(`availableQuestionsPaths`, availableQuestionsPaths);
+
     return {
       props: {
         topicTitle,
@@ -103,6 +99,8 @@ const RequestedTopic: NextPage<RequestedTopicProps> = ({
   topicTitle,
   availableQuestions,
 }) => {
+  console.log(`availableQuestions`, availableQuestions);
+
   return (
     <div
       className="primary-content bg-gray-50 h-full min-h-screen"
@@ -119,9 +117,7 @@ const RequestedTopic: NextPage<RequestedTopicProps> = ({
           <div className="text-sm breadcrumbs mb-8">
             <ul>
               <li>
-                <Link href="/">
-                  Home
-                </Link>
+                <Link href="/">Home</Link>
               </li>
               <li>{topicTitle}</li>
             </ul>
@@ -136,16 +132,11 @@ const RequestedTopic: NextPage<RequestedTopicProps> = ({
             {availableQuestions.map((question) => {
               return (
                 <li key={question.path} className="pb-2">
-                  <Link
-                    href={`/question${question.path}`}
-                    className="link capitalize hover:bg-base-100">
-
-                    <span className="no-underline text-sm mr-2 text-neutral">
-                      {question.number}
-                    </span>
-                    <>{question.title}</>
-
-                  </Link>
+                  <QuestionLink
+                    path={question.path}
+                    number={question.number}
+                    title={question.title}
+                  />
                 </li>
               );
             })}
