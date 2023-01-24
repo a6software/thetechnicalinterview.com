@@ -120,7 +120,7 @@ const RequestedTopic: NextPage<RequestedTopicProps> = ({
             <ul>
               <li>
                 <Link href="/">
-                  <a>Home</a>
+                  Home
                 </Link>
               </li>
               <li>{topicTitle}</li>
@@ -136,13 +136,15 @@ const RequestedTopic: NextPage<RequestedTopicProps> = ({
             {availableQuestions.map((question) => {
               return (
                 <li key={question.path} className="pb-2">
-                  <Link href={`/question${question.path}`}>
-                    <a className="link capitalize hover:bg-base-100">
-                      <span className="no-underline text-sm mr-2 text-neutral">
-                        {question.number}
-                      </span>
-                      <>{question.title}</>
-                    </a>
+                  <Link
+                    href={`/question${question.path}`}
+                    className="link capitalize hover:bg-base-100">
+
+                    <span className="no-underline text-sm mr-2 text-neutral">
+                      {question.number}
+                    </span>
+                    <>{question.title}</>
+
                   </Link>
                 </li>
               );

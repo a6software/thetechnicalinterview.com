@@ -247,12 +247,12 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
             <ul>
               <li>
                 <Link href="/">
-                  <a>Home</a>
+                  Home
                 </Link>
               </li>
               <li>
                 <Link href={`/topic/${topic}`}>
-                  <a>{topicTitle}</a>
+                  {topicTitle}
                 </Link>
               </li>
               <li>{title}</li>
@@ -320,25 +320,25 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
             <div className="flex mt-16 w-full">
               <div className="w-1/2 flex justify-start">
                 {previous && (
-                  <Link href={previous}>
-                    <a
-                      className="btn btn-secondary"
-                      onClick={() => setResult(undefined)}
-                    >
+                  <Link
+                    href={previous}
+                    className="btn btn-secondary"
+                    onClick={() => setResult(undefined)}>
+                    
                       Previous
-                    </a>
+                    
                   </Link>
                 )}
               </div>
               <div className="w-1/2 flex justify-end">
                 {next && (
-                  <Link href={next}>
-                    <a
-                      className="btn btn-secondary"
-                      onClick={() => setResult(undefined)}
-                    >
+                  <Link
+                    href={next}
+                    className="btn btn-secondary"
+                    onClick={() => setResult(undefined)}>
+                    
                       Next
-                    </a>
+                    
                   </Link>
                 )}
               </div>

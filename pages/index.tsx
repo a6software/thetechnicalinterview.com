@@ -64,8 +64,8 @@ const Index: NextPage<IndexProps> = ({ topics }) => {
             {topics.map((topic) => {
               return (
                 <li key={topic.dir} className="pb-2">
-                  <Link href={`/topic/${topic.dir}`}>
-                    <a className="link">{topic.title}</a>
+                  <Link href={`/topic/${topic.dir}`} className="link">
+                    {topic.title}
                   </Link>
                 </li>
               );
