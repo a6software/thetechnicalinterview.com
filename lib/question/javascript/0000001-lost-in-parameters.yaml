@@ -26,7 +26,7 @@ correct_answers:
   - "`0`"
 
 explanation: |
-  `0` is logged to the console. Try the demo.
+  `0` is logged to the console.
 
   `immediateA` is called with the argument `0`, thus `a` parameter is `0`.
 
