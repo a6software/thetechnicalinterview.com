@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ParsedUrlQuery } from "querystring";
 import Footer from "../../lib/components/Footer";
 import getTopics from "../../lib/utils/get-topics";
-import { AvailableQuestion, TopicMeta } from "../../types";
+import { AvailableQuestion } from "../../types";
 import QuestionLink from "../../lib/components/QuestionLink";
 import config from "../../lib/config";
 import topicFileLoader from "../../lib/utils/topic-file-loader";
@@ -47,7 +47,6 @@ export const getStaticProps: GetStaticProps<
   }
 
   const topicFileContents = await topicFileLoader(requestedTopic);
-  console.log(`topicFileContents`, topicFileContents);
 
   if (!topicFileContents) {
     return {
@@ -71,8 +70,6 @@ const RequestedTopic: NextPage<RequestedTopicProps> = ({
   introduction,
   availableQuestions,
 }) => {
-  console.log(`introduction`, introduction);
-
   return (
     <div
       className="primary-content bg-gray-50 h-full min-h-screen"
@@ -97,7 +94,7 @@ const RequestedTopic: NextPage<RequestedTopicProps> = ({
 
           <div className="pb-8 prose">
             {introduction.split("\n").map((p) => (
-              <p>{p}</p>
+              <p key={p}>{p}</p>
             ))}
           </div>
 

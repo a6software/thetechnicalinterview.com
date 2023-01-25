@@ -22,7 +22,7 @@ const Breadcrumbs = ({ showHomeLink, crumbs }: BreadcrumbsProps = defaults) => {
           </li>
         )}
         {crumbs.map((crumb) => (
-          <li className="sm-w-max">
+          <li className="sm-w-max" key={crumb.path}>
             <Breadcrumb crumb={crumb} />
           </li>
         ))}
