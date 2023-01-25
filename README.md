@@ -14,6 +14,18 @@ Be sure to [lint the contents of your YAML file](http://www.yamllint.com/).
 
 Then put in a PR. The rest happens by magic / the work experience kid at Vercel.
 
+### How To Create A New Question Using Chat GPT
+
+You can use the provided template to create new questions using Chat GPT.
+
+Copy the contents of the template:
+
+![copy the chat gpt template from github](./docs/images/copy-chat-gpt-template.png "copy the chat gpt template from github")
+
+Then paste into Chat GPT, and a new question will be magically created for you.
+
+Follow the remainder of the instructions from above to add your new question to the project.
+
 ## Local dev
 
 First, run the development server:
