@@ -15,6 +15,7 @@ interface Params extends ParsedUrlQuery {
 
 interface RequestedTopicProps {
   topicTitle: string;
+  introduction: string;
   availableQuestions: AvailableQuestion[];
 }
 
@@ -46,6 +47,7 @@ export const getStaticProps: GetStaticProps<
   }
 
   const topicFileContents = await topicFileLoader(requestedTopic);
+  console.log(`topicFileContents`, topicFileContents);
 
   if (!topicFileContents) {
     return {
@@ -53,11 +55,12 @@ export const getStaticProps: GetStaticProps<
     };
   }
 
-  const { topicTitle, availableQuestions } = topicFileContents;
+  const { topicTitle, introduction, availableQuestions } = topicFileContents;
 
   return {
     props: {
       topicTitle,
+      introduction,
       availableQuestions,
     },
   };
@@ -65,9 +68,10 @@ export const getStaticProps: GetStaticProps<
 
 const RequestedTopic: NextPage<RequestedTopicProps> = ({
   topicTitle,
+  introduction,
   availableQuestions,
 }) => {
-  // console.log(`availableQuestions`, availableQuestions);
+  console.log(`introduction`, introduction);
 
   return (
     <div
@@ -91,10 +95,11 @@ const RequestedTopic: NextPage<RequestedTopicProps> = ({
             </ul>
           </div>
 
-          <p className="pb-8">
-            What do you mean this site looks terrible? How dare you. Back in the
-            olden days all sites looked like this.
-          </p>
+          <div className="pb-8 prose">
+            {introduction.split("\n").map((p) => (
+              <p>{p}</p>
+            ))}
+          </div>
 
           <ul>
             {availableQuestions.map((question) => {

@@ -40,12 +40,15 @@ const topicFileLoader = async (requestedTopic: string) => {
 
     const topicYamlFile = await fs.readFile(requestedTopicFilePath, "utf-8");
 
-    const { title: topicTitle } = yaml.load(topicYamlFile) as TopicMeta;
+    const { title: topicTitle, introduction } = yaml.load(
+      topicYamlFile
+    ) as TopicMeta;
 
     // console.log(`availableQuestionsPaths`, availableQuestionsPaths);
 
     return {
       topicTitle,
+      introduction,
       availableQuestions: horribleHack(availableQuestions),
     };
   } catch (e) {

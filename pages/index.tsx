@@ -1,6 +1,7 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { Icon } from "@iconify/react";
 import getTopics from "../lib/utils/get-topics";
 import Footer from "../lib/components/Footer";
 import getAvailableTopics from "../lib/utils/get-available-topics";
@@ -46,9 +47,16 @@ const Index: NextPage<IndexProps> = ({ topics }) => {
           <ul>
             {topics.map((topic) => {
               return (
-                <li key={topic.dir} className="pb-2">
-                  <Link href={`/topic/${topic.dir}`} className="link">
-                    {topic.title}
+                <li key={topic.dir} className="pb-4">
+                  <Link
+                    href={`/topic/${topic.dir}`}
+                    className="link flex items-center gap-2"
+                    title={`${topic.title} technical interview questions`}
+                  >
+                    <div className="w-8 flex justify-center">
+                      <Icon icon={topic.icon} />
+                    </div>
+                    <div>{topic.title}</div>
                   </Link>
                 </li>
               );

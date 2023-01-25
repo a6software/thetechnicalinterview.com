@@ -32,11 +32,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - [ ] BUG - fix up next & previous, broken
  - [ ] need test for Q submission
- - [ ] 'next' when last question in a section should not take you to the next section (e.g. AWS > JS)
- - [ ] extract 'next' and 'previous' buttons
-- [ ] why the heck is `capitalize` not working on Q list? 
+ - [x] 'next' when last question in a section should not take you to the next section (e.g. AWS > JS)
+ - [x] extract 'next' and 'previous' buttons
 - [ ] DRY up radio & checkbox
-- - [ ] extract breadcrumbs
+- - [x] extract breadcrumbs
 - [ ] breadcrumbs should be responsive
   - [ ] fix up the overly long breadcrumbs for aws Q's
 - [ ] stretch 'submit' button on mobile view

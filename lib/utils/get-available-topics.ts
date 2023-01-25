@@ -9,9 +9,9 @@ const getAvailableTopics = (
     availableTopics.map(async (topic) => {
       const yamlFile = await fs.readFile(topic.topicFilePath, "utf-8");
 
-      const { title } = yaml.load(yamlFile) as TopicMeta;
+      const { title, icon } = yaml.load(yamlFile) as TopicMeta;
 
-      return { dir: topic.dir, title };
+      return { dir: topic.dir, title, icon };
     })
   );
 
