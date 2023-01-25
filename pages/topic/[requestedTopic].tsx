@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ParsedUrlQuery } from "querystring";
 import Footer from "../../lib/components/Footer";
 import getTopics from "../../lib/utils/get-topics";
-import { AvailableQuestion, TopicMeta } from "../../types";
+import { AvailableQuestion } from "../../types";
 import QuestionLink from "../../lib/components/QuestionLink";
 import config from "../../lib/config";
 import topicFileLoader from "../../lib/utils/topic-file-loader";
@@ -15,6 +15,7 @@ interface Params extends ParsedUrlQuery {
 
 interface RequestedTopicProps {
   topicTitle: string;
+  introduction: string;
   availableQuestions: AvailableQuestion[];
 }
 
@@ -53,11 +54,12 @@ export const getStaticProps: GetStaticProps<
     };
   }
 
-  const { topicTitle, availableQuestions } = topicFileContents;
+  const { topicTitle, introduction, availableQuestions } = topicFileContents;
 
   return {
     props: {
       topicTitle,
+      introduction,
       availableQuestions,
     },
   };
@@ -65,10 +67,9 @@ export const getStaticProps: GetStaticProps<
 
 const RequestedTopic: NextPage<RequestedTopicProps> = ({
   topicTitle,
+  introduction,
   availableQuestions,
 }) => {
-  // console.log(`availableQuestions`, availableQuestions);
-
   return (
     <div
       className="primary-content bg-gray-50 h-full min-h-screen"
@@ -91,10 +92,11 @@ const RequestedTopic: NextPage<RequestedTopicProps> = ({
             </ul>
           </div>
 
-          <p className="pb-8">
-            What do you mean this site looks terrible? How dare you. Back in the
-            olden days all sites looked like this.
-          </p>
+          <div className="pb-8 prose">
+            {introduction.split("\n").map((p) => (
+              <p key={p}>{p}</p>
+            ))}
+          </div>
 
           <ul>
             {availableQuestions.map((question) => {

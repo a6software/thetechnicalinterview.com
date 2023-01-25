@@ -3,6 +3,8 @@ export type PossibleAnswer = string;
 
 export interface TopicMeta {
   title: string;
+  icon: string;
+  introduction: string;
 }
 
 export interface QuestionFile {
@@ -36,4 +38,5 @@ export interface AvailableQuestion {
 export interface TopicListing {
   dir: TopicPathing["dir"];
   title: TopicMeta["title"];
+  icon: TopicMeta["icon"];
 }

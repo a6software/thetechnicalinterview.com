@@ -16,6 +16,8 @@ import classNames from "classnames";
 import topic from "../../../lib/utils/topic";
 import { ParsedUrlQuery } from "querystring";
 import questionFileLoader from "../../../lib/utils/question-file-loader";
+import Breadcrumbs from "../../../lib/components/Breadcrumbs";
+import Hint from "../../../lib/components/Hint";
 
 const basePath = `${process.cwd()}/questions`;
 
@@ -184,17 +186,13 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
 
       <main className="container p-4 lg:mx-auto w-full lg:w-1/2">
         <div className="flex flex-col justify-center">
-          <div className="text-sm breadcrumbs mb-8">
-            <ul>
-              <li>
-                <Link href="/">Home</Link>
-              </li>
-              <li>
-                <Link href={`/topic/${topic}`}>{topicTitle}</Link>
-              </li>
-              <li>{title}</li>
-            </ul>
-          </div>
+          <Breadcrumbs
+            showHomeLink
+            crumbs={[
+              { path: `/topic/${topic}`, title: topicTitle },
+              { path: null, title },
+            ]}
+          />
 
           <section>
             <div className="prose mb-6">
@@ -223,6 +221,8 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
                 </button>
               </div>
             </form>
+
+            <Hint hint={hint} />
           </section>
 
           <div className={answerBlockClasses} ref={answerRef}>
