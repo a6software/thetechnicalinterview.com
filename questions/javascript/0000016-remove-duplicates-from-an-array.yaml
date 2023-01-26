@@ -3,22 +3,22 @@ title: How to remove duplicates from an array in javascript?
 question: |
   How can you remove duplicate elements from an array in javascript?
 possible_answers:
-
-  - "new Set(array)"
-  - "array.filter(function(item, pos) {return array.indexOf(item) == pos;})"
-  - "array.sort().filter(function(item, pos) {return !pos || item != array[pos - 1];})"
-  - "array.reduce((acc, current) => acc.includes(current) ? acc : [...acc, current], [])"
+  - "`new Set(array)`"
+  - "`array.filter(function(item, pos) {return array.indexOf(item) == pos;})`"
+  - "`array.sort().filter(function(item, pos) {return !pos || item != array[pos - 1];})`"
+  - "`array.reduce((acc, current) => acc.includes(current) ? acc : [...acc, current], [])`"
 correct_answers:
-  - "new Set(array)"
-  - "array.filter(function(item, pos) {return array.indexOf(item) == pos;})"
-  - "array.reduce((acc, current) => acc.includes(current) ? acc : [...acc, current], [])"
+  - "`new Set(array)`"
+  - "`array.filter(function(item, pos) {return array.indexOf(item) == pos;})`"
+  - "`array.reduce((acc, current) => acc.includes(current) ? acc : [...acc, current], [])`"
 explanation: |
-  There are several ways to remove duplicate elements from an array in javascript. The new Set(array) method creates a new Set and automatically removes duplicates, and then it can be converted back to array by spread operator.
-  Another way is to use the Array.prototype.filter() method to filter out duplicates by checking the index of each element.
-  Another way is to use the Array.prototype.reduce() method to iterate over the array and create a new array without duplicates.
+  There are several ways to remove duplicate elements from an array in javascript. The `new Set(array)` method creates a new Set and automatically removes duplicates, and then it can be converted back to array by spread operator.
+  
+  Another way is to use the `Array.prototype.filter()` method to filter out duplicates by checking the index of each element.
+  
+  Another way is to use the `Array.prototype.reduce()` method to iterate over the array and create a new array without duplicates.
 
 tags:
-
   - javascript
   - arrays
   - duplicate removal

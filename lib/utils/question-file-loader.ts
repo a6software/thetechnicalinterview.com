@@ -68,7 +68,7 @@ const questionFileLoader = async (topic: string, requestedQuestion: string) => {
       topic,
       requestedQuestion: requestedQuestionPath,
       question,
-      hint,
+      hint: hint || null,
       possible_answers,
       correct_answers,
       explanation,

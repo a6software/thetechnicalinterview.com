@@ -10,7 +10,7 @@ export interface TopicMeta {
 export interface QuestionFile {
   title: string;
   question: string;
-  hint: string;
+  hint: string | null;
   possible_answers: PossibleAnswer[];
   correct_answers: string[];
   explanation: string;

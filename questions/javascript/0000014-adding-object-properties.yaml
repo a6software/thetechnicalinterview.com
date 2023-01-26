@@ -10,13 +10,13 @@ question: |
 hint: |
   Think about what type of data is being added to the object.
 possible_answers:
-  - "{a:1, b:2, c:[3,4]}"
-  - "[3,4]"
-  - "{a:1, b:2, c:{3,4}}"
-  - "undefined"
+  - "`{a:1, b:2, c:[3,4]}`"
+  - "`[3,4]`"
+  - "`{a:1, b:2, c:{3,4}}`"
+  - "`undefined`"
 
 correct_answers:
-  - "{a:1, b:2, c:[3,4]}"
+  - "`{a:1, b:2, c:[3,4]}`"
 
 explanation: |
   The code declares an object `obj` with properties `a` and `b`, and an array `arr`. It then adds a new property `c` to the `obj` object and assigns the value of the `arr` array to it. The `console.log(obj)` statement outputs the entire object, which now includes the new property `c` with the value of the `arr` array.
