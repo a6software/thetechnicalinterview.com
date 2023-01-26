@@ -237,7 +237,9 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
                   .split("\n")
                   .filter((p) => p)
                   .map((p) => (
-                    <Markdown className="prose pb-4">{p}</Markdown>
+                    <Markdown className="prose pb-4" key={p}>
+                      {p}
+                    </Markdown>
                   ))}
               </div>
             </section>
