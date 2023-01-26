@@ -173,6 +173,8 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
     hidden: !result,
   });
 
+  console.log(`explanation`, explanation.split("\n"));
+
   return (
     <div
       className="primary-content bg-gray-50 h-full min-h-screen"
@@ -198,7 +200,7 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
             <div className="prose mb-6">
               <h1 className="">{title}</h1>
             </div>
-            <Markdown className={"prose"}>{question}</Markdown>
+            <Markdown className={"prose mb-2"}>{question}</Markdown>
 
             <form onSubmit={handleSubmit}>
               {correct_answers.length === 1 ? (
@@ -222,7 +224,7 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
               </div>
             </form>
 
-            <Hint hint={hint} />
+            {hint && <Hint hint={hint} />}
           </section>
 
           <div className={answerBlockClasses} ref={answerRef}>
@@ -230,7 +232,16 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
               {result?.correct && <CorrectAnswer />}
               {!result?.correct && <IncorrectAnswer />}
 
-              <Markdown className="prose mt-8">{explanation}</Markdown>
+              <div className="mt-8">
+                {explanation
+                  .split("\n")
+                  .filter((p) => p)
+                  .map((p) => (
+                    <Markdown className="prose pb-4" key={p}>
+                      {p}
+                    </Markdown>
+                  ))}
+              </div>
             </section>
 
             <section className="prose mt-8">
@@ -238,22 +249,20 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
                 <>
                   <h3>Credit</h3>
                   <ul>
-                    {credit.map((c) => {
-                      return (
-                        <li key={c}>
-                          <Credit credit={c} />
-                        </li>
-                      );
-                    })}
+                    {credit.map((c) => (
+                      <li key={c}>
+                        <Credit credit={c} />
+                      </li>
+                    ))}
                   </ul>
                 </>
               )}
 
               <h3>Tags</h3>
               <ul>
-                {tags.map((tag) => {
-                  return <li key={tag}>{tag}</li>;
-                })}
+                {tags.map((tag) => (
+                  <li key={tag}>{tag}</li>
+                ))}
               </ul>
             </section>
 
