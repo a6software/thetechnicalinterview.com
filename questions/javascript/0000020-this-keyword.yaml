@@ -9,11 +9,10 @@ question: |
   myFunction();
   ```
 possible_answers:
-
-  "`this` is the `myFunction` function."
-  "`this` is the global object (`window` in a browser or `global` in Node.js)."
-  "`this` is `undefined`."
-  "`this` is a reference to the object that the function was called on."
+ - "`this` is the `myFunction` function."
+ - "`this` is the global object (`window` in a browser or `global` in Node.js)."
+ - "`this` is `undefined`."
+ - "`this` is a reference to the object that the function was called on."
 
 correct_answers:
   - "this is the global object (window in a browser or global in Node.js)."
