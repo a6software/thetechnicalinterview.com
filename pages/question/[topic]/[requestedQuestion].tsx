@@ -173,8 +173,6 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
     hidden: !result,
   });
 
-  console.log(`explanation`, explanation.split("\n"));
-
   return (
     <div
       className="primary-content bg-gray-50 h-full min-h-screen"
