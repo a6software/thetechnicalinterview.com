@@ -81,7 +81,7 @@ const RequestedTopic: NextPage<RequestedTopicProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container p-4 lg:mx-auto h-screen w-full lg:w-1/2">
+      <main className="container p-4 lg:mx-auto w-full lg:w-1/2">
         <div className="flex flex-col justify-center">
           <div className="text-sm breadcrumbs mb-8">
             <ul>

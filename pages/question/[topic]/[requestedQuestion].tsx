@@ -175,7 +175,7 @@ const QuestionPage: NextPage<QuestionPageProps> = ({
 
   return (
     <div
-      className="primary-content bg-gray-50 h-full min-h-screen"
+      className="primary-content bg-gray-50 h-full min-h-screen h-screen"
       data-theme={"light"}
     >
       <Head>
