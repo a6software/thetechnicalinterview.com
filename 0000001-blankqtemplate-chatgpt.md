@@ -1,6 +1,13 @@
-Can you complete the following template. This is to create a multiple choice JavaScript interview question. This template uses Markdown syntax.
+Can you complete the following template. This is to create a multiple choice interview question.
 
-The question difficulty should be: easy.
+Use the following replacements:
+
+"-" becomes "`-"
+"````" becomes "\```"
+
+The topic is: AWS Certified Developer - Associate (DVA-C01)
+
+The question difficulty should be: medium.
 
 The [title] should be a short, succinct title for the question.
 
@@ -8,7 +15,7 @@ The [question] should be the interview question. This can be multiple lines and 
 
 The [hint] is optional. If provided it can be multiple lines. It should be a relevant hint to help answer the [question].
 
-The [possible_answers] should be a markdown list of potential answers to the given [question]. Each line should be wrapped in double qoutes.
+The [possible_answers] should be a markdown list of potential answers to the given [question]. Each line should be wrapped in double qoutes. 
 
 The [correct_answers] should be a markdown list of one or more correct answers to the given [question]. Each line should be wrapped in double qoutes.
 
